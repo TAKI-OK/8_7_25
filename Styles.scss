@@ -1,0 +1,135 @@
+// Cài Đặt SASS -> npm install -g sass
+// Phiên Bản -> sass --version
+// Theo Dõi / Chuyển Đổi Code -> sass Styles.scss Styles.css --watch
+
+@import './variables';
+
+html {
+    font-size: 62.5%;
+}
+
+$redColor: red; // Tạo Biến
+$blue-BG: blue;
+$colors: red, green, blue; // Danh Sách
+$theme-colors: (
+  primary: #0d6efd,
+  danger: #dc3545,
+  success: #198754
+); // Map
+
+@each $color in $colors {
+  .text-#{$color} {
+    color: $color;
+  }
+}
+
+@each $name, $value in $theme-colors {
+  .bg-#{$name} {
+    background-color: $value;
+  }
+}
+
+// through bao gồm số cuối
+// to không bao gồm số cuối
+@for $i from 1 through 3 {
+  .mt-#{$i} {
+    margin-top: 10px * $i;
+  }
+}
+
+h1 {
+    color: $redColor;
+    background-color: $blue-BG;
+}
+
+// @mixin là một tính năng trong SCSS (SASS) dùng để tái sử dụng các khối CSS bằng cách định nghĩa trước và chèn lại ở nhiều nơi bằng @include.
+// Nói đơn giản: Mixins giống như hàm trong CSS – viết 1 lần, dùng nhiều lần.
+@mixin size($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+// Tham số mặc định
+@mixin bgc($bgColor: red) {
+    background-color: $bgColor;
+}
+
+@mixin absoluteCenter($direction: "left") {
+    position: absolute;
+
+    @if($direction == "left") {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    @else if($direction == "top") {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    @else if($direction == "both") {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@mixin theme($theme: "dark") {
+    @if($theme == "dark") {
+        background: #000;
+        color: #fff;
+    }
+    @else if($theme == "light") {
+        background: #fff;
+        color: #000;
+    }
+    @else {
+        background: gray;
+        color: black;
+    }
+
+}
+
+@mixin maxWidth($value) {
+    @media screen and (max-width: $value) {
+        @content;
+    }
+}
+@mixin minWidth($value) {
+    @media screen and (max-width: $value) {
+        @content;
+    }
+}
+
+// Nested code: code lồng nhau
+.header {
+    padding: 2rem;
+    background-color: #333;
+    &-inner {
+        color: #fff;
+        &-text {
+            font-size: 20px;
+            // .header-inner-text:hover
+            &:hover {
+                color: pink;
+            }
+        }
+        // .header-inner:hover
+        &:hover {
+            color: orange;
+        }
+    }
+    // Hoặc
+    &-inner-text {
+        // ...
+    }
+
+    @include minWidth(1024px) {
+        display: none;
+    }
+}
+
+// Sử Dụng Mixin
+.box {
+    @include size(50px, 50px);
+    @include bgc();
+    @include absoluteCenter("both");
+}
